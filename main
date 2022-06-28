@@ -1,0 +1,27 @@
+def road(past, a, b, arr):
+    l = 0
+    for i in range(len(arr[a])):
+        if arr[a][i] != 0 and not(i in past):
+            if i != b:
+                past.append(i)
+                new_l = arr[a][i] + road(past, i, b, arr)
+                if new_l < l or l == 0:
+                    l = new_l
+                past = [0]
+            else:
+                if arr[a][i] < l or l == 0:
+                    l = arr[a][i]
+    return l
+
+N, M = map(int, input().split())
+
+arr = [[0 for i in range(N)] for i in range(N)]
+for i in range(M):
+    line = list(map(int, input().split()))
+    arr[line[0]-1][line[1]-1] = line[2]
+    arr[line[1]-1][line[0]-1] = line[2]
+
+s = 0
+for i in range(1, N):
+    s += road([0], 0, i, arr)
+print(s)
